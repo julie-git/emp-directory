@@ -33,39 +33,47 @@ class SearchResultContainer extends Component {
           }))
 
         })
-        // console.log("&&&&&&&")
-        // // this.testFunction()
-        // this.filtertestfunction()
-
+     
       })
       .catch(err => console.log(err));
   }
 
-  filterEmployees= (searchkey) => {
+  filterEmployees = (searchkey) => {
+    console.log("***in Filter*******");
+    console.log(searchkey);
+    console.log(this.state.result);
     // this.state.result = this.state.result.filter(this.state.result => this.state.result.includes(searchkey));
-    var filterResult= this.state.result.filter(function (e) {
-     
-      return e.firstName.includes(searchkey);
-  });
-  console.log(filterResult);
+    var filterResult = this.state.result.filter(person => person.firstName === searchkey)
+
+    this.setState({
+      result:filterResult
+      
+    })
+
+   
+    // console.log("FILTERD RESULT------")
+    // console.log(filterResult);
   }
 
-  
+
   // When the form is submitted, search the Giphy API for `this.state.search`
   handleFormSubmit = event => {
     event.preventDefault();
     const value = event.target.value;
-      const name = event.target.name;
-      console.log("**********");
-      console.log(value);
-      console.log(name);
-      this.setState({
-        
-        [name]: value
-        
-      });
-      this.filterEmployees(this.state.search);
-    
+    const name = event.target.name;
+    console.log("**********");
+    console.log(value);
+    console.log(name);
+    //filter function here
+    this.filterEmployees(value);
+    this.setState({
+
+      [name]: value
+
+    });
+    this.filterEmployees(value);
+    this.filterEmployees(this.state.search);
+
   };
 
   // testFunction = () => {
@@ -73,26 +81,30 @@ class SearchResultContainer extends Component {
   //   { console.log(this.state.result[0].picture) }
   //   { console.log("+++++++++++++") }
   // }
-  filtertestfunction = () => {
-    const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-    const result2 = words.filter(word => word.includes("it"));
-    console.log(result2);
-  }
+  // filtertestfunction = () => {
+  //   const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+  //   const result2 = words.filter(word => word.includes("it"));
+  //   console.log(result2);
+  // }
 
-  // handleInputChange = event => {
-  //   // event.preventDefault();
-  //   const value = event.target.value;
-  //   const name = event.target.name;
-  //   console.log("**********");
-  //   console.log(value);
-  //   console.log(name);
-  //   this.setState({
-      
-  //     [name]: value
-      
-  //   });
+  handleInputChange = event => {
+    event.preventDefault();
+    console.log(event);
+    const value = event.target.value;
+    const name = event.target.name;
+    console.log("**********");
+    console.log(value);
+    console.log(name);
+    //filter function be called here
+    // this.filterEmployees(value);
     // this.filterEmployees(this.state.search);
-  // };
+    this.setState({
+
+      [name]: value
+
+    });
+        
+  };
 
   render() {
 
@@ -107,9 +119,9 @@ class SearchResultContainer extends Component {
         </div>
         <div className="row">
           <div className="col-md-6">
-              <SearchForm
+            <SearchForm
               value={this.state.search}
-                // handleInputChange={this.handleInputChange}
+               handleInputChange={this.handleInputChange}
                handleFormSubmit={this.handleFormSubmit}
             />
           </div>
@@ -119,30 +131,19 @@ class SearchResultContainer extends Component {
           {/* <div > */}
           <table className="table">
             <tr>
-            {/* <div className= "col-md-2"> */}
               <th scope="col">Photo</th>
-              {/* </div> */}
-              {/* <div className= "col-md-2"> */}
               <th>First Name</th>
               {/* <th onClick={this.onSortChange}>First Name   */}
               {/* <button onClick={this.onSortChange}> ^
 								</button> */}
               {/* </th> */}
-              {/* </div>
-              <div className= "col-md-2"> */}
               <th scope="col">Last Name </th>
-              {/* </div>
-              <div className= "col-3"> */}
               <th scope="col">Email</th>
-              {/* </div>
-              <div className= "col-3"> */}
               <th scope="col">Phone</th>
-              {/* </div> */}
             </tr>
-            {/* </div> */}
-            {/* <div className="row"> */}
-              {/* { [...this.state.result].sort(this.sortTypes[this.state.currentSort].fn).map((item) =>  */}
-              {/* {this.state.result.length > 0 ? (
+
+            {/* { [...this.state.result].sort(this.sortTypes[this.state.currentSort].fn).map((item) =>  */}
+            {/* {this.state.result.length > 0 ? (
                 <div>
                   {this.state.result.map(item => (
                     <EmployeeCard
@@ -156,21 +157,21 @@ class SearchResultContainer extends Component {
                   ))}
                 </div>
               ) : (<div />)} */}
-              {[...this.state.result].map((item) =>
-                <EmployeeCard
-                  picture={item.picture}
-                  firstName={item.firstName}
-                  lastName={item.lastName}
-                  email={item.email}
-                  phone={item.phone}
-                  key={item.key}
-                />
-              )}
-            {/* </div> */}
+            {[...this.state.result].map((item) =>
+              <EmployeeCard
+                picture={item.picture}
+                firstName={item.firstName}
+                lastName={item.lastName}
+                email={item.email}
+                phone={item.phone}
+                key={item.key}
+              />
+            )}
+
           </table>
         </div>
 
-        {/* </div> */}
+
       </div>
     );
   }
